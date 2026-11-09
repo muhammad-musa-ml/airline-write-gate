@@ -83,6 +83,13 @@ def test_a_later_search_replaces_the_earlier_record_of_the_same_flight():
     assert session.flights[("HAT1", "2024-05-20")]["prices"]["economy"] == 120
 
 
+def test_a_session_built_with_reservations_in_it_also_keeps_the_flights_a_change_replaced():
+    session = Session(reservations={"R1": reservation("R1")})
+    new = [{"flight_number": "HAT2", "origin": "JFK", "destination": "ATL", "date": "2024-05-21", "price": 100}]
+    session.observe("update_reservation_flights", {"reservation_id": "R1"}, json.dumps(reservation("R1", flights=new)))
+    assert sorted(f["flight_number"] for f in session.flights_ever_on("R1")) == ["HAT1", "HAT2"]
+
+
 def test_flight_status_is_stored_by_flight_and_date():
     session = Session()
     session.observe("get_flight_status", {"flight_number": "HAT9", "date": "2024-05-15"}, "cancelled")
