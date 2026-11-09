@@ -1,6 +1,6 @@
 # airline-write-gate
 
-I wrote a small gate that checks each write an airline agent proposes (book, cancel, change flights, change bags, send a certificate) against the airline policy text, using only what the agent had read in the session by then. It says allow, hold or block, and for every hold or block it returns a reason and a repair the agent can act on. A passenger change is only checked for having read the reservation. Standard library only, pytest for development. It is written for Python 3.10 or newer; I ran it on 3.13.5 and Windows 11 only.
+I wrote a small gate that checks each write an airline agent proposes (book, cancel, change flights, change bags, send a certificate) against the airline policy text, using only what the agent had read in the session by then. It says allow, hold or block, and for every hold or block it returns a reason and a repair the agent can act on. A passenger change is only checked for having read the reservation. Standard library only, pytest for development. It is written for Python 3.10 or newer; I developed it on Python 3.13.5 and Windows 11, and the first GitHub Actions run passed on ubuntu-latest and windows-latest with Python 3.10 and 3.13.
 
 I replayed the 800 recorded airline runs of tau2-bench through it in shadow mode: every recorded write is judged before its own result is observed, then the run carries on exactly as recorded. This measures the gate. It says nothing about an agent that reads a block and tries again.
 
@@ -95,6 +95,5 @@ Task 44 is a miss: the reservation has insurance, which covers a health or weath
 - Not checked: the user's yes before a write, the cancellation reason, "do not offer compensation unless asked", and the price arithmetic of a change.
 - One domain. The airline policy is short and its conditions are readable from the tool results; I have not tried retail or telecom.
 - Timing: `Gate.evaluate` took 11.5 to 14.8 microseconds at the median and 38.3 to 50.1 at the 99th percentile over five passes of the 1,008 recorded writes, Python 3.13.5 on one Windows 11 machine (`results/bench.txt`). It does not include parsing a tool result, which happens when the result arrives. The earlier run, with the first version of the rules, gave 22.9 to 31.0 and 73.9 to 129.3, so treat the figures as machine-dependent.
-- The GitHub workflow in `.github/workflows/ci.yml` and Python 3.10 have not been run by me.
 
 tau2-bench is MIT licensed. `tests/fixtures/` holds trimmed excerpts of three of its recorded runs (tool calls and results only) and of its task entries; `scripts/make_fixtures.py` builds them. The repo is MIT licensed.
