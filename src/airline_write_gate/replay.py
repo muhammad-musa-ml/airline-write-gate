@@ -33,7 +33,7 @@ def load_results(path):
 
 
 def replay_simulation(simulation, policy):
-    """Return one CallRecord per write call the assistant made in this simulation."""
+    """Return one CallRecord per write call the agent under test made in this simulation."""
     gate = Gate(policy)
     pending = {}  # tool call id -> index into records
     calls = {}

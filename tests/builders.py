@@ -73,7 +73,7 @@ def change_reservation(gate, rid="R1", tool="update_reservation_flights", error=
 
 
 def call(cid, name, arguments, requestor="assistant"):
-    """One assistant message with a single tool call, in the shape of a tau2-bench trajectory."""
+    """One message from the agent under test with a single tool call, in the shape of a tau2-bench trajectory."""
     return {"role": "assistant", "tool_calls": [{"id": cid, "name": name, "arguments": arguments, "requestor": requestor}]}
 
 
