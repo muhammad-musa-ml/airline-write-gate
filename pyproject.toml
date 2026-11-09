@@ -19,6 +19,9 @@ airline-write-gate = "airline_write_gate.cli:main"
 [tool.setuptools.packages.find]
 where = ["src"]
 
+[tool.setuptools.package-data]
+airline_write_gate = ["policy.json"]
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["src"]

@@ -1,0 +1,7 @@
+{
+  "now": "2024-05-15T15:00:00",
+  "rules": {
+    "read-before-write": {},
+    "cancel-eligibility": { "window_hours": 24 }
+  }
+}

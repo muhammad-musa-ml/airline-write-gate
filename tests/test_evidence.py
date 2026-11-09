@@ -1,41 +1,8 @@
 import json
 
+from builders import flight, reservation
+
 from airline_write_gate.evidence import Session
-
-
-def reservation(rid="R1", **overrides):
-    record = {
-        "reservation_id": rid,
-        "user_id": "u1",
-        "origin": "JFK",
-        "destination": "ATL",
-        "flight_type": "one_way",
-        "cabin": "economy",
-        "flights": [{"flight_number": "HAT1", "origin": "JFK", "destination": "ATL", "date": "2024-05-20", "price": 100}],
-        "passengers": [{"first_name": "A", "last_name": "B", "dob": "1990-01-01"}],
-        "payment_history": [{"payment_id": "credit_card_1", "amount": 100}],
-        "created_at": "2024-05-01T10:00:00",
-        "total_baggages": 0,
-        "nonfree_baggages": 0,
-        "insurance": "no",
-        "status": None,
-    }
-    record.update(overrides)
-    return record
-
-
-def flight(number, date=None, **overrides):
-    record = {
-        "flight_number": number,
-        "origin": "JFK",
-        "destination": "ATL",
-        "status": "available",
-        "date": date,
-        "available_seats": {"basic_economy": 3, "economy": 3, "business": 3},
-        "prices": {"basic_economy": 50, "economy": 100, "business": 300},
-    }
-    record.update(overrides)
-    return record
 
 
 def test_reservation_read_is_stored_by_id():
