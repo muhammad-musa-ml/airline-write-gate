@@ -2,6 +2,18 @@
   "now": "2024-05-15T15:00:00",
   "rules": {
     "read-before-write": {},
-    "cancel-eligibility": { "window_hours": 24 }
+    "cancel-eligibility": { "window_hours": 24 },
+    "flight-change-basic-economy": {},
+    "cabin-change-after-flown": {},
+    "trip-endpoints": {},
+    "flights-seen-available": {},
+    "baggage-no-removal": {},
+    "baggage-allowance": {
+      "free_bags": {
+        "regular": { "basic_economy": 0, "economy": 1, "business": 2 },
+        "silver": { "basic_economy": 1, "economy": 2, "business": 3 },
+        "gold": { "basic_economy": 2, "economy": 3, "business": 4 }
+      }
+    }
   }
 }

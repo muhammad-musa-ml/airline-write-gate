@@ -27,6 +27,10 @@ def load_policy(path=None):
     unknown = sorted(set(policy["rules"]) - set(rules_module.RULES))
     if unknown:
         raise ValueError("policy names rules that do not exist: " + ", ".join(unknown))
+    for rule_id, params in policy["rules"].items():
+        missing = [p for p in rules_module.RULES[rule_id].required if p not in params]
+        if missing:
+            raise ValueError(f"rule {rule_id} needs parameters: " + ", ".join(missing))
     return policy
 
 
@@ -58,7 +62,7 @@ class Gate:
                 continue
             rule = rules_module.RULES[rule_id]
             if name in rule.tools:
-                findings.extend(rule.check(arguments, self.session, params, self.now, rule_id))
+                findings.extend(rule.check(name, arguments, self.session, params, self.now, rule_id))
         if any(f.verdict == "block" for f in findings):
             verdict = "block"
         elif findings:
