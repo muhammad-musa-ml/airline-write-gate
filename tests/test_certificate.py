@@ -1,5 +1,5 @@
 import pytest
-from builders import flight, read_reservation, read_status, read_user, search_direct
+from builders import change_reservation, flight, read_reservation, read_status, read_user, search_direct
 
 from airline_write_gate.gate import Gate
 
@@ -68,8 +68,56 @@ def test_the_delayed_amount_is_50_per_passenger():
     read_user(gate, membership="gold")
     read_reservation(gate, passengers=two_passengers())
     read_status(gate, "HAT1", "2024-05-20", "delayed")
+    change_reservation(gate, passengers=two_passengers())
     assert send(gate, 100).verdict == "allow"
     assert send(gate, 200).verdict == "block"
+
+
+def test_a_delayed_flight_is_compensated_only_after_the_reservation_is_changed():
+    gate = Gate()
+    read_user(gate, membership="gold")
+    read_reservation(gate)
+    read_status(gate, "HAT1", "2024-05-20", "delayed")
+    decision = send(gate, 50)
+    assert decision.verdict == "block"
+    assert "has not changed or cancelled" in decision.findings[0].reason
+    change_reservation(gate)
+    assert send(gate, 50).verdict == "allow"
+
+
+def test_a_cancellation_by_the_agent_also_counts_as_the_change():
+    gate = Gate()
+    read_user(gate, membership="gold")
+    read_reservation(gate)
+    read_status(gate, "HAT1", "2024-05-20", "delayed")
+    change_reservation(gate, tool="cancel_reservation")
+    assert send(gate, 50).verdict == "allow"
+
+
+def test_a_change_that_failed_does_not_count():
+    gate = Gate()
+    read_user(gate, membership="gold")
+    read_reservation(gate)
+    read_status(gate, "HAT1", "2024-05-20", "delayed")
+    change_reservation(gate, error=True)
+    assert send(gate, 50).verdict == "block"
+
+
+def test_a_baggage_change_is_not_a_change_of_the_reservation_for_this_rule():
+    gate = Gate()
+    read_user(gate, membership="gold")
+    read_reservation(gate)
+    read_status(gate, "HAT1", "2024-05-20", "delayed")
+    change_reservation(gate, tool="update_reservation_baggages")
+    assert send(gate, 50).verdict == "block"
+
+
+def test_the_cancelled_amount_needs_no_change():
+    gate = Gate()
+    read_user(gate, membership="gold")
+    read_reservation(gate)
+    read_status(gate, "HAT1", "2024-05-20", "cancelled")
+    assert send(gate, 100).verdict == "allow"
 
 
 def test_an_amount_for_a_status_the_flight_does_not_have_is_blocked():

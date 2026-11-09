@@ -418,6 +418,7 @@ def certificate_eligibility(name, arguments, session: Session, params, now, rule
             )
         ]
     unread = False
+    unchanged = []
     for res in eligible:
         passengers = len(res["passengers"])
         statuses = [flight_status(session, f["flight_number"], f["date"]) for f in res["flights"]]
@@ -425,7 +426,18 @@ def certificate_eligibility(name, arguments, session: Session, params, now, rule
         if amount == params["cancelled_per_passenger"] * passengers and "cancelled" in statuses:
             return []
         if amount == params["delayed_per_passenger"] * passengers and "delayed" in statuses:
-            return []
+            if res["reservation_id"] in session.changed:
+                return []
+            unchanged.append(res["reservation_id"])
+    if unchanged:
+        return [
+            _finding(
+                rule_id,
+                "block",
+                f"amount {amount} fits a delayed flight on {', '.join(unchanged)}, which the agent has not changed or cancelled",
+                "do not send the certificate yet; policy pays for a delayed flight only after the reservation is changed or cancelled",
+            )
+        ]
     if unread:
         return [
             _finding(

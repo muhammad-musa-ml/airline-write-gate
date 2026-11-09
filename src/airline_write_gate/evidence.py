@@ -45,11 +45,17 @@ class Session:
     flights: dict = field(default_factory=dict)
     # (flight_number, date) -> status text from get_flight_status
     statuses: dict = field(default_factory=dict)
+    # reservation ids the agent has changed or cancelled in this session
+    changed: set = field(default_factory=set)
 
     def observe(self, name, arguments, content, error=False):
         """Record one tool result. Results of failed calls are ignored."""
         if error:
             return
+        if name in ("cancel_reservation", "update_reservation_flights"):
+            rid = (arguments or {}).get("reservation_id")
+            if rid is not None:
+                self.changed.add(rid)
         if name == "get_user_details":
             user = _parse_json(content)
             if isinstance(user, dict) and "user_id" in user:

@@ -77,3 +77,18 @@ def test_flight_status_is_stored_by_flight_and_date():
     session.observe("get_flight_status", {"flight_number": "HAT9", "date": "2024-05-15"}, "cancelled")
     assert session.statuses[("HAT9", "2024-05-15")] == "cancelled"
     assert ("HAT9", "2024-05-16") not in session.statuses
+
+
+def test_a_cancel_or_flight_change_that_ran_marks_the_reservation_changed():
+    session = Session()
+    session.observe("cancel_reservation", {"reservation_id": "R1"}, json.dumps(reservation("R1")))
+    session.observe("update_reservation_flights", {"reservation_id": "R2"}, json.dumps(reservation("R2")))
+    assert session.changed == {"R1", "R2"}
+
+
+def test_a_failed_change_and_a_baggage_or_passenger_update_do_not_mark_it_changed():
+    session = Session()
+    session.observe("cancel_reservation", {"reservation_id": "R1"}, "Error", error=True)
+    session.observe("update_reservation_baggages", {"reservation_id": "R2"}, json.dumps(reservation("R2")))
+    session.observe("update_reservation_passengers", {"reservation_id": "R3"}, json.dumps(reservation("R3")))
+    assert session.changed == set()

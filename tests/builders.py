@@ -67,6 +67,11 @@ def read_user(gate, **overrides):
     return record
 
 
+def change_reservation(gate, rid="R1", tool="update_reservation_flights", error=False, **overrides):
+    """Record that the agent's write on a reservation ran (or failed); the result is the reservation after it."""
+    gate.observe(tool, {"reservation_id": rid}, json.dumps(reservation(rid, **overrides)), error)
+
+
 def read_status(gate, number, date, status):
     gate.observe("get_flight_status", {"flight_number": number, "date": date}, status)
 
