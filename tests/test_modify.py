@@ -131,7 +131,6 @@ FLOWN = [{"flight_number": "HAT1", "origin": "JFK", "destination": "ATL", "date"
 def test_a_cabin_change_after_a_flown_segment_is_blocked():
     gate = Gate()
     read_reservation(gate, flights=FLOWN)
-    search_direct(gate, "2024-05-10", [flight("HAT1")])
     decision = change_flights(gate, [{"flight_number": "HAT1", "date": "2024-05-10"}], cabin="business")
     assert decision.verdict == "block"
     assert "cabin-change-after-flown" in rules_of(decision)
@@ -147,10 +146,19 @@ def test_a_cabin_change_with_a_flight_today_and_no_status_is_held():
     today = [{"flight_number": "HAT1", "origin": "JFK", "destination": "ATL", "date": "2024-05-15", "price": 100}]
     gate = Gate()
     read_reservation(gate, flights=today)
-    search_direct(gate, "2024-05-15", [flight("HAT1")])
     decision = change_flights(gate, [{"flight_number": "HAT1", "date": "2024-05-15"}], cabin="business")
     assert decision.verdict == "hold"
-    assert "get_flight_status" in decision.findings[0].repair
+    cabin_findings = [f for f in decision.findings if f.rule == "cabin-change-after-flown"]
+    assert "get_flight_status" in cabin_findings[0].repair
+
+
+def test_a_flight_today_that_a_search_lists_as_available_has_not_taken_off():
+    today = [{"flight_number": "HAT1", "origin": "JFK", "destination": "ATL", "date": "2024-05-15", "price": 100}]
+    gate = Gate()
+    read_reservation(gate, flights=today)
+    search_direct(gate, "2024-05-15", [flight("HAT1")])
+    decision = change_flights(gate, [{"flight_number": "HAT1", "date": "2024-05-15"}], cabin="business")
+    assert "cabin-change-after-flown" not in rules_of(decision)
 
 
 def test_a_cabin_change_before_anything_is_flown_passes_this_rule():

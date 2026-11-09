@@ -66,9 +66,17 @@ def read_before_write(name, arguments, session: Session, params, now, rule_id):
 FLOWN_STATUSES = ("flying", "landed")
 
 
+def flight_status(session: Session, number, date):
+    """The status the session has seen for a flight on a date: a status call first, then a search result."""
+    status = session.statuses.get((number, date))
+    if status is None:
+        status = (session.flights.get((number, date)) or {}).get("status")
+    return status
+
+
 def flown(flight, session: Session, now):
     """True, False, or None when the session cannot tell (a flight dated today with no status read)."""
-    status = session.statuses.get((flight["flight_number"], flight["date"]))
+    status = flight_status(session, flight["flight_number"], flight["date"])
     if status is not None:
         return status in FLOWN_STATUSES
     day = datetime.fromisoformat(flight["date"]).date()
@@ -120,7 +128,7 @@ def cancel_eligibility(name, arguments, session: Session, params, now, rule_id):
         return []
     if res.get("insurance") == "yes":
         return []  # the stated reason (health or weather) is not in the call, so it is not checked
-    statuses = [session.statuses.get((f["flight_number"], f["date"])) for f in res["flights"]]
+    statuses = [flight_status(session, f["flight_number"], f["date"]) for f in res["flights"]]
     if any(s == "cancelled" for s in statuses):
         return []
     if any(s is None for s in statuses):
@@ -347,6 +355,97 @@ def baggage_allowance(name, arguments, session: Session, params, now, rule_id):
     ]
 
 
+# ---- booking ----
+
+
+def booking_limits(name, arguments, session: Session, params, now, rule_id):
+    findings = []
+    passengers = len(arguments.get("passengers") or [])
+    if passengers > params["max_passengers"]:
+        findings.append(
+            _finding(
+                rule_id,
+                "block",
+                f"the booking has {passengers} passengers and a reservation holds at most {params['max_passengers']}",
+                f"split the booking so that no reservation has more than {params['max_passengers']} passengers",
+            )
+        )
+    counts = {}
+    for payment in arguments.get("payment_methods") or []:
+        kind = payment["payment_id"].rsplit("_", 1)[0]
+        counts[kind] = counts.get(kind, 0) + 1
+    for kind, limit in params["max_payment_methods"].items():
+        if counts.get(kind, 0) > limit:
+            findings.append(
+                _finding(
+                    rule_id,
+                    "block",
+                    f"the booking pays with {counts[kind]} {kind} methods and the limit is {limit}",
+                    f"use at most {limit} {kind} method(s) on one reservation",
+                )
+            )
+    return findings
+
+
+# ---- compensation ----
+
+
+def certificate_eligibility(name, arguments, session: Session, params, now, rule_id):
+    """A certificate needs an eligible reservation and a confirmed cancelled or delayed flight with the right amount."""
+    uid, amount = arguments.get("user_id"), arguments.get("amount")
+    user = session.users.get(uid)
+    if user is None:
+        return []  # read_before_write holds this call
+    owned = [r for r in session.reservations.values() if r["user_id"] == uid]
+    if not owned:
+        return [
+            _finding(
+                rule_id,
+                "hold",
+                f"no reservation of {uid} has been read, so the compensation has no flight to be about",
+                "call get_reservation_details for the reservation the user complains about",
+            )
+        ]
+    member = user.get("membership") in ("silver", "gold")
+    eligible = [r for r in owned if member or r.get("insurance") == "yes" or r.get("cabin") == "business"]
+    if not eligible:
+        return [
+            _finding(
+                rule_id,
+                "block",
+                f"{uid} is a {user.get('membership')} member and no reservation read has insurance or a business cabin",
+                "do not compensate; policy allows it only for silver or gold members, travel insurance, or business class",
+            )
+        ]
+    unread = False
+    for res in eligible:
+        passengers = len(res["passengers"])
+        statuses = [flight_status(session, f["flight_number"], f["date"]) for f in res["flights"]]
+        unread = unread or any(s is None for s in statuses)
+        if amount == params["cancelled_per_passenger"] * passengers and "cancelled" in statuses:
+            return []
+        if amount == params["delayed_per_passenger"] * passengers and "delayed" in statuses:
+            return []
+    if unread:
+        return [
+            _finding(
+                rule_id,
+                "hold",
+                f"amount {amount} is not yet backed by a flight status the session has read",
+                "call get_flight_status for the flights on the reservation to confirm they were cancelled or delayed",
+            )
+        ]
+    return [
+        _finding(
+            rule_id,
+            "block",
+            f"amount {amount} is not {params['cancelled_per_passenger']} per passenger with a cancelled flight "
+            f"or {params['delayed_per_passenger']} per passenger with a delayed flight on any eligible reservation read",
+            "do not send the certificate; confirm the facts first and use the amount the policy sets",
+        )
+    ]
+
+
 RULES = {
     "read-before-write": Rule(
         tools=RESERVATION_WRITES + ("book_reservation", "send_certificate"),
@@ -362,5 +461,15 @@ RULES = {
         tools=("update_reservation_baggages", "book_reservation"),
         check=baggage_allowance,
         required=("free_bags",),
+    ),
+    "booking-limits": Rule(
+        tools=("book_reservation",),
+        check=booking_limits,
+        required=("max_passengers", "max_payment_methods"),
+    ),
+    "certificate-eligibility": Rule(
+        tools=("send_certificate",),
+        check=certificate_eligibility,
+        required=("cancelled_per_passenger", "delayed_per_passenger"),
     ),
 }

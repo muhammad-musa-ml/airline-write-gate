@@ -14,6 +14,11 @@
         "silver": { "basic_economy": 1, "economy": 2, "business": 3 },
         "gold": { "basic_economy": 2, "economy": 3, "business": 4 }
       }
-    }
+    },
+    "booking-limits": {
+      "max_passengers": 5,
+      "max_payment_methods": { "certificate": 1, "credit_card": 1, "gift_card": 3 }
+    },
+    "certificate-eligibility": { "cancelled_per_passenger": 100, "delayed_per_passenger": 50 }
   }
 }
