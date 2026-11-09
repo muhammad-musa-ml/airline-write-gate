@@ -1,0 +1,232 @@
+[
+ {
+  "annotations": null,
+  "description": {
+   "notes": null,
+   "purpose": "Test complex reservation change.",
+   "relevant_policies": null
+  },
+  "evaluation_criteria": {
+   "actions": [
+    {
+     "action_id": "29_0",
+     "arguments": {
+      "reservation_id": "VA5SGQ"
+     },
+     "info": null,
+     "name": "get_reservation_details"
+    },
+    {
+     "action_id": "29_1",
+     "arguments": {
+      "reservation_id": "VA5SGQ"
+     },
+     "info": null,
+     "name": "cancel_reservation"
+    },
+    {
+     "action_id": "29_2",
+     "arguments": {
+      "cabin": "economy",
+      "destination": "JFK",
+      "flight_type": "round_trip",
+      "flights": [
+       {
+        "date": "2024-05-17",
+        "flight_number": "HAT169"
+       },
+       {
+        "date": "2024-05-19",
+        "flight_number": "HAT033"
+       }
+      ],
+      "insurance": "no",
+      "nonfree_baggages": 0,
+      "origin": "DTW",
+      "passengers": [
+       {
+        "dob": "1967-03-12",
+        "first_name": "Raj",
+        "last_name": "Brown"
+       }
+      ],
+      "payment_methods": [
+       {
+        "amount": 282,
+        "payment_id": "credit_card_8003957"
+       }
+      ],
+      "total_baggages": 1,
+      "user_id": "raj_brown_5782"
+     },
+     "info": null,
+     "name": "book_reservation"
+    }
+   ],
+   "communicate_info": [],
+   "nl_assertions": [
+    "Agent informs the user that the reservation can't be changed and it can be cancelled instead.",
+    "Agent cancelled reservation VA5SGQ.",
+    "Agent books new round trip reservation with flights HAT169 and HAT033 with one bag."
+   ],
+   "reward_basis": [
+    "DB",
+    "COMMUNICATE"
+   ]
+  },
+  "id": "29",
+  "initial_state": null,
+  "user_scenario": {
+   "instructions": {
+    "domain": "airline",
+    "known_info": "You are Raj Brown.\n\nYour user id is raj_brown_5782.\n\nThe reservation ID is VA5SGQ for your DTW to LGA trip.",
+    "reason_for_call": "You want to change your upcoming roundtrip flights which are currently DTW to LGA and back.\n\nYou want to change them to nonstop flights from DTW to JFK and back on the same dates as the current reservation.",
+    "task_instructions": "You only want early flights that arrive before 7am at the destination.\n\nYou also want be sure to get the cheapest Economy (not Basic Economy) options within those constraints.\n\nIf the agent asks, you want your return flight to leave on the 19th.\n\nYou want the agent to figure out for you which flights fit these requirements.\n\nSince you took insurance for this trip, you want change fees waived (mention your health problem at the start of the conversation).\n\nIf and only if the prices are provided to you and you are asked to choose, choose flights HAT169 and HAT033 (if these are available within the options the agent gives you).\n\nYou also want to add 1 checked bag.",
+    "unknown_info": null
+   },
+   "persona": null
+  }
+ },
+ {
+  "annotations": null,
+  "description": {
+   "notes": null,
+   "purpose": "Test two cancellations requests, none allowed + 1 upgrade to business class.",
+   "relevant_policies": null
+  },
+  "evaluation_criteria": {
+   "actions": [
+    {
+     "action_id": "37_1",
+     "arguments": {
+      "reservation_id": "M20IZO"
+     },
+     "info": null,
+     "name": "get_reservation_details"
+    },
+    {
+     "action_id": "37_2",
+     "arguments": {
+      "date": "2024-05-22",
+      "destination": "ATL",
+      "origin": "JFK"
+     },
+     "info": null,
+     "name": "search_direct_flight"
+    },
+    {
+     "action_id": "37_3",
+     "arguments": {
+      "date": "2024-05-22",
+      "destination": "MCO",
+      "origin": "ATL"
+     },
+     "info": null,
+     "name": "search_direct_flight"
+    },
+    {
+     "action_id": "37_4",
+     "arguments": {
+      "cabin": "business",
+      "flights": [
+       {
+        "date": "2024-05-22",
+        "flight_number": "HAT268"
+       },
+       {
+        "date": "2024-05-22",
+        "flight_number": "HAT010"
+       }
+      ],
+      "payment_id": "credit_card_9074831",
+      "reservation_id": "M20IZO"
+     },
+     "info": null,
+     "name": "update_reservation_flights"
+    }
+   ],
+   "communicate_info": [],
+   "nl_assertions": [
+    "Agent does not cancel reservation NQNU5R since it is in the past.",
+    "Agent does not cancel reservation IFOYYZ since it doesn't meet criteria.",
+    "Agent upgrades M20IZO to business class."
+   ],
+   "reward_basis": [
+    "DB",
+    "COMMUNICATE"
+   ]
+  },
+  "id": "37",
+  "initial_state": null,
+  "user_scenario": {
+   "instructions": {
+    "domain": "airline",
+    "known_info": "You are Aarav Ahmed.\nYour user id is aarav_ahmed_6699.",
+    "reason_for_call": "You want to cancel two of your upcoming reservations (IFOYYZ and NQNU5R) and upgrade a third (M20IZO) to business class.",
+    "task_instructions": "You want to use your credit card ending in 7334 to pay for all charges and are willing to comply with airline policies for the changes.",
+    "unknown_info": null
+   },
+   "persona": null
+  }
+ },
+ {
+  "annotations": null,
+  "description": {
+   "notes": null,
+   "purpose": "Test agent's capacity to handle a flight change.",
+   "relevant_policies": null
+  },
+  "evaluation_criteria": {
+   "actions": [
+    {
+     "action_id": "40_0",
+     "arguments": {
+      "reservation_id": "3RK2T9"
+     },
+     "info": null,
+     "name": "get_reservation_details"
+    },
+    {
+     "action_id": "40_1",
+     "arguments": {
+      "passengers": [
+       {
+        "dob": "1992-11-12",
+        "first_name": "Anya",
+        "last_name": "Garcia"
+       },
+       {
+        "dob": "1989-12-13",
+        "first_name": "Mei",
+        "last_name": "Garcia"
+       }
+      ],
+      "reservation_id": "3RK2T9"
+     },
+     "info": null,
+     "name": "update_reservation_passengers"
+    }
+   ],
+   "communicate_info": [],
+   "nl_assertions": [
+    "Agent updates reservation 3RK2T9 to passenger Mei Garcia."
+   ],
+   "reward_basis": [
+    "DB",
+    "COMMUNICATE"
+   ]
+  },
+  "id": "40",
+  "initial_state": null,
+  "user_scenario": {
+   "instructions": {
+    "domain": "airline",
+    "known_info": "You are Anya Garcia.\n\nYour user id is  anya_garcia_5901.\n\nYour reservation id is 3RK2T9.",
+    "reason_for_call": "You booked the flight  and you want to change the passenger name on the reservation.",
+    "task_instructions": "You want to change the name from Mei Lee to Mei Garcia. \n\nBe insistent and don't provide more information than necessary.",
+    "unknown_info": null
+   },
+   "persona": null
+  }
+ }
+]

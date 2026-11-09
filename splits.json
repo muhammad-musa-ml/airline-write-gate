@@ -1,0 +1,4 @@
+{
+  "development": ["gpt-4.1-2025-04-14", "o4-mini-2025-04-16"],
+  "held_out": ["claude-3-7-sonnet-20250219", "gpt-4.1-mini-2025-04-14"]
+}

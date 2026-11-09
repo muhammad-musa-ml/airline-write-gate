@@ -1,0 +1,593 @@
+{
+ "info": {
+  "agent_info": {
+   "llm": "fixture-from-gpt-4.1-2025-04-14"
+  }
+ },
+ "simulations": [
+  {
+   "messages": [
+    {
+     "role": "assistant",
+     "tool_calls": [
+      {
+       "arguments": {
+        "reservation_id": "VA5SGQ"
+       },
+       "id": "call_MiqiGPcE4JCh6Ca0tH8sx9OC",
+       "name": "get_reservation_details",
+       "requestor": "assistant"
+      }
+     ]
+    },
+    {
+     "content": "{\"reservation_id\": \"VA5SGQ\", \"user_id\": \"raj_brown_5782\", \"origin\": \"DTW\", \"destination\": \"LGA\", \"flight_type\": \"round_trip\", \"cabin\": \"economy\", \"flights\": [{\"flight_number\": \"HAT035\", \"origin\": \"DTW\", \"destination\": \"PHX\", \"date\": \"2024-05-17\", \"price\": 163}, {\"flight_number\": \"HAT066\", \"origin\": \"PHX\", \"destination\": \"LGA\", \"date\": \"2024-05-17\", \"price\": 184}, {\"flight_number\": \"HAT002\", \"origin\": \"LGA\", \"destination\": \"PHX\", \"date\": \"2024-05-19\", \"price\": 174}, {\"flight_number\": \"HAT106\", \"origin\": \"PHX\", \"destination\": \"DTW\", \"date\": \"2024-05-20\", \"price\": 135}], \"passengers\": [{\"first_name\": \"Raj\", \"last_name\": \"Brown\", \"dob\": \"1967-03-12\"}], \"payment_history\": [{\"payment_id\": \"credit_card_8003957\", \"amount\": 686}], \"created_at\": \"2024-05-08T18:28:13\", \"total_baggages\": 0, \"nonfree_baggages\": 0, \"insurance\": \"yes\", \"status\": null}",
+     "error": false,
+     "id": "call_MiqiGPcE4JCh6Ca0tH8sx9OC",
+     "requestor": "assistant",
+     "role": "tool"
+    },
+    {
+     "role": "assistant",
+     "tool_calls": [
+      {
+       "arguments": {
+        "date": "2024-05-17",
+        "destination": "JFK",
+        "origin": "DTW"
+       },
+       "id": "call_79KowNc2yFOxLGDnGrBZiQxe",
+       "name": "search_direct_flight",
+       "requestor": "assistant"
+      },
+      {
+       "arguments": {
+        "date": "2024-05-20",
+        "destination": "DTW",
+        "origin": "JFK"
+       },
+       "id": "call_naejm18osgD4AyEAhKMF3e3l",
+       "name": "search_direct_flight",
+       "requestor": "assistant"
+      }
+     ]
+    },
+    {
+     "content": "[{\"flight_number\": \"HAT169\", \"origin\": \"DTW\", \"destination\": \"JFK\", \"status\": \"available\", \"scheduled_departure_time_est\": \"04:00:00\", \"scheduled_arrival_time_est\": \"06:00:00\", \"date\": null, \"available_seats\": {\"basic_economy\": 12, \"economy\": 12, \"business\": 19}, \"prices\": {\"basic_economy\": 64, \"economy\": 171, \"business\": 294}}, {\"flight_number\": \"HAT240\", \"origin\": \"DTW\", \"destination\": \"JFK\", \"status\": \"available\", \"scheduled_departure_time_est\": \"16:00:00\", \"scheduled_arrival_time_est\": \"18:00:00\", \"date\": null, \"available_seats\": {\"basic_economy\": 13, \"economy\": 17, \"business\": 5}, \"prices\": {\"basic_economy\": 61, \"economy\": 173, \"business\": 445}}, {\"flight_number\": \"HAT263\", \"origin\": \"DTW\", \"destination\": \"JFK\", \"status\": \"available\", \"scheduled_departure_time_est\": \"15:00:00\", \"scheduled_arrival_time_est\": \"17:00:00\", \"date\": null, \"available_seats\": {\"basic_economy\": 19, \"economy\": 20, \"business\": 8}, \"prices\": {\"basic_economy\": 80, \"economy\": 109, \"business\": 230}}]",
+     "error": false,
+     "id": "call_79KowNc2yFOxLGDnGrBZiQxe",
+     "requestor": "assistant",
+     "role": "tool"
+    },
+    {
+     "content": "[{\"flight_number\": \"HAT033\", \"origin\": \"JFK\", \"destination\": \"DTW\", \"status\": \"available\", \"scheduled_departure_time_est\": \"00:00:00\", \"scheduled_arrival_time_est\": \"02:00:00\", \"date\": null, \"available_seats\": {\"basic_economy\": 5, \"economy\": 16, \"business\": 7}, \"prices\": {\"basic_economy\": 95, \"economy\": 140, \"business\": 327}}, {\"flight_number\": \"HAT088\", \"origin\": \"JFK\", \"destination\": \"DTW\", \"status\": \"available\", \"scheduled_departure_time_est\": \"04:00:00\", \"scheduled_arrival_time_est\": \"06:00:00\", \"date\": null, \"available_seats\": {\"basic_economy\": 10, \"economy\": 0, \"business\": 11}, \"prices\": {\"basic_economy\": 61, \"economy\": 179, \"business\": 306}}, {\"flight_number\": \"HAT092\", \"origin\": \"JFK\", \"destination\": \"DTW\", \"status\": \"available\", \"scheduled_departure_time_est\": \"00:00:00\", \"scheduled_arrival_time_est\": \"02:00:00\", \"date\": null, \"available_seats\": {\"basic_economy\": 20, \"economy\": 10, \"business\": 14}, \"prices\": {\"basic_economy\": 89, \"economy\": 173, \"business\": 493}}, {\"flight_number\": \"HAT212\", \"origin\": \"JFK\", \"destination\": \"DTW\", \"status\": \"available\", \"scheduled_departure_time_est\": \"04:00:00\", \"scheduled_arrival_time_est\": \"06:00:00\", \"date\": null, \"available_seats\": {\"basic_economy\": 5, \"economy\": 17, \"business\": 17}, \"prices\": {\"basic_economy\": 63, \"economy\": 154, \"business\": 365}}]",
+     "error": false,
+     "id": "call_naejm18osgD4AyEAhKMF3e3l",
+     "requestor": "assistant",
+     "role": "tool"
+    },
+    {
+     "role": "assistant",
+     "tool_calls": [
+      {
+       "arguments": {
+        "date": "2024-05-19",
+        "destination": "DTW",
+        "origin": "JFK"
+       },
+       "id": "call_G2298bDNYQTJifYcDCKfvZTB",
+       "name": "search_direct_flight",
+       "requestor": "assistant"
+      }
+     ]
+    },
+    {
+     "content": "[{\"flight_number\": \"HAT033\", \"origin\": \"JFK\", \"destination\": \"DTW\", \"status\": \"available\", \"scheduled_departure_time_est\": \"00:00:00\", \"scheduled_arrival_time_est\": \"02:00:00\", \"date\": null, \"available_seats\": {\"basic_economy\": 10, \"economy\": 4, \"business\": 1}, \"prices\": {\"basic_economy\": 76, \"economy\": 111, \"business\": 207}}, {\"flight_number\": \"HAT088\", \"origin\": \"JFK\", \"destination\": \"DTW\", \"status\": \"available\", \"scheduled_departure_time_est\": \"04:00:00\", \"scheduled_arrival_time_est\": \"06:00:00\", \"date\": null, \"available_seats\": {\"basic_economy\": 10, \"economy\": 7, \"business\": 2}, \"prices\": {\"basic_economy\": 100, \"economy\": 185, \"business\": 370}}, {\"flight_number\": \"HAT092\", \"origin\": \"JFK\", \"destination\": \"DTW\", \"status\": \"available\", \"scheduled_departure_time_est\": \"00:00:00\", \"scheduled_arrival_time_est\": \"02:00:00\", \"date\": null, \"available_seats\": {\"basic_economy\": 5, \"economy\": 6, \"business\": 20}, \"prices\": {\"basic_economy\": 98, \"economy\": 154, \"business\": 333}}, {\"flight_number\": \"HAT212\", \"origin\": \"JFK\", \"destination\": \"DTW\", \"status\": \"available\", \"scheduled_departure_time_est\": \"04:00:00\", \"scheduled_arrival_time_est\": \"06:00:00\", \"date\": null, \"available_seats\": {\"basic_economy\": 20, \"economy\": 2, \"business\": 15}, \"prices\": {\"basic_economy\": 65, \"economy\": 192, \"business\": 200}}]",
+     "error": false,
+     "id": "call_G2298bDNYQTJifYcDCKfvZTB",
+     "requestor": "assistant",
+     "role": "tool"
+    },
+    {
+     "role": "assistant",
+     "tool_calls": [
+      {
+       "arguments": {
+        "cabin": "economy",
+        "flights": [
+         {
+          "date": "2024-05-17",
+          "flight_number": "HAT169"
+         },
+         {
+          "date": "2024-05-19",
+          "flight_number": "HAT033"
+         }
+        ],
+        "payment_id": "credit_card_8003957",
+        "reservation_id": "VA5SGQ"
+       },
+       "id": "call_7cEJhxyHglJkOixrF4chn8SB",
+       "name": "update_reservation_flights",
+       "requestor": "assistant"
+      }
+     ]
+    },
+    {
+     "content": "{\"reservation_id\": \"VA5SGQ\", \"user_id\": \"raj_brown_5782\", \"origin\": \"DTW\", \"destination\": \"LGA\", \"flight_type\": \"round_trip\", \"cabin\": \"economy\", \"flights\": [{\"flight_number\": \"HAT169\", \"origin\": \"DTW\", \"destination\": \"JFK\", \"date\": \"2024-05-17\", \"price\": 171}, {\"flight_number\": \"HAT033\", \"origin\": \"JFK\", \"destination\": \"DTW\", \"date\": \"2024-05-19\", \"price\": 111}], \"passengers\": [{\"first_name\": \"Raj\", \"last_name\": \"Brown\", \"dob\": \"1967-03-12\"}], \"payment_history\": [{\"payment_id\": \"credit_card_8003957\", \"amount\": 686}, {\"payment_id\": \"credit_card_8003957\", \"amount\": -374}], \"created_at\": \"2024-05-08T18:28:13\", \"total_baggages\": 0, \"nonfree_baggages\": 0, \"insurance\": \"yes\", \"status\": null}",
+     "error": false,
+     "id": "call_7cEJhxyHglJkOixrF4chn8SB",
+     "requestor": "assistant",
+     "role": "tool"
+    },
+    {
+     "role": "assistant",
+     "tool_calls": [
+      {
+       "arguments": {
+        "nonfree_baggages": 0,
+        "payment_id": "credit_card_8003957",
+        "reservation_id": "VA5SGQ",
+        "total_baggages": 1
+       },
+       "id": "call_M6UfSgso8omc8D94Iv55FroB",
+       "name": "update_reservation_baggages",
+       "requestor": "assistant"
+      }
+     ]
+    },
+    {
+     "content": "{\"reservation_id\": \"VA5SGQ\", \"user_id\": \"raj_brown_5782\", \"origin\": \"DTW\", \"destination\": \"LGA\", \"flight_type\": \"round_trip\", \"cabin\": \"economy\", \"flights\": [{\"flight_number\": \"HAT169\", \"origin\": \"DTW\", \"destination\": \"JFK\", \"date\": \"2024-05-17\", \"price\": 171}, {\"flight_number\": \"HAT033\", \"origin\": \"JFK\", \"destination\": \"DTW\", \"date\": \"2024-05-19\", \"price\": 111}], \"passengers\": [{\"first_name\": \"Raj\", \"last_name\": \"Brown\", \"dob\": \"1967-03-12\"}], \"payment_history\": [{\"payment_id\": \"credit_card_8003957\", \"amount\": 686}, {\"payment_id\": \"credit_card_8003957\", \"amount\": -374}], \"created_at\": \"2024-05-08T18:28:13\", \"total_baggages\": 1, \"nonfree_baggages\": 0, \"insurance\": \"yes\", \"status\": null}",
+     "error": false,
+     "id": "call_M6UfSgso8omc8D94Iv55FroB",
+     "requestor": "assistant",
+     "role": "tool"
+    }
+   ],
+   "reward_info": {
+    "reward": 1.0
+   },
+   "task_id": "29",
+   "trial": 0
+  },
+  {
+   "messages": [
+    {
+     "role": "assistant",
+     "tool_calls": [
+      {
+       "arguments": {
+        "user_id": "aarav_ahmed_6699"
+       },
+       "id": "call_tPmJvQ0d0iw81yGqcQEwmgYs",
+       "name": "get_user_details",
+       "requestor": "assistant"
+      }
+     ]
+    },
+    {
+     "content": "{\"user_id\": \"aarav_ahmed_6699\", \"name\": {\"first_name\": \"Aarav\", \"last_name\": \"Ahmed\"}, \"address\": {\"address1\": \"176 Willow Lane\", \"address2\": \"Suite 431\", \"city\": \"Jacksonville\", \"country\": \"USA\", \"state\": \"FL\", \"zip\": \"32131\"}, \"email\": \"aarav.ahmed6812@example.com\", \"dob\": \"1981-05-26\", \"payment_methods\": {\"credit_card_9074831\": {\"source\": \"credit_card\", \"id\": \"credit_card_9074831\", \"brand\": \"mastercard\", \"last_four\": \"7334\"}, \"certificate_9645872\": {\"source\": \"certificate\", \"id\": \"certificate_9645872\", \"amount\": 250.0}, \"credit_card_4959530\": {\"source\": \"credit_card\", \"id\": \"credit_card_4959530\", \"brand\": \"mastercard\", \"last_four\": \"5018\"}}, \"saved_passengers\": [{\"first_name\": \"Aarav\", \"last_name\": \"Patel\", \"dob\": \"1980-12-03\"}], \"membership\": \"silver\", \"reservations\": [\"M20IZO\", \"N6F783\", \"IFOYYZ\", \"NQNU5R\"]}",
+     "error": false,
+     "id": "call_tPmJvQ0d0iw81yGqcQEwmgYs",
+     "requestor": "assistant",
+     "role": "tool"
+    },
+    {
+     "role": "assistant",
+     "tool_calls": [
+      {
+       "arguments": {
+        "reservation_id": "IFOYYZ"
+       },
+       "id": "call_c5s3C8ghd3OQLuGNC4Iw87Tj",
+       "name": "get_reservation_details",
+       "requestor": "assistant"
+      },
+      {
+       "arguments": {
+        "reservation_id": "NQNU5R"
+       },
+       "id": "call_hasZCWv1bMhdky7s9n3QbFzg",
+       "name": "get_reservation_details",
+       "requestor": "assistant"
+      },
+      {
+       "arguments": {
+        "reservation_id": "M20IZO"
+       },
+       "id": "call_h2SuTmvkK5XdoARUhgNjplgB",
+       "name": "get_reservation_details",
+       "requestor": "assistant"
+      }
+     ]
+    },
+    {
+     "content": "{\"reservation_id\": \"IFOYYZ\", \"user_id\": \"aarav_ahmed_6699\", \"origin\": \"CLT\", \"destination\": \"EWR\", \"flight_type\": \"round_trip\", \"cabin\": \"basic_economy\", \"flights\": [{\"flight_number\": \"HAT157\", \"origin\": \"CLT\", \"destination\": \"EWR\", \"date\": \"2024-05-28\", \"price\": 51}, {\"flight_number\": \"HAT215\", \"origin\": \"EWR\", \"destination\": \"CLT\", \"date\": \"2024-05-30\", \"price\": 65}], \"passengers\": [{\"first_name\": \"Aarav\", \"last_name\": \"Ahmed\", \"dob\": \"1981-05-26\"}], \"payment_history\": [{\"payment_id\": \"credit_card_4959530\", \"amount\": 116}], \"created_at\": \"2024-05-12T00:14:30\", \"total_baggages\": 0, \"nonfree_baggages\": 0, \"insurance\": \"no\", \"status\": null}",
+     "error": false,
+     "id": "call_c5s3C8ghd3OQLuGNC4Iw87Tj",
+     "requestor": "assistant",
+     "role": "tool"
+    },
+    {
+     "content": "{\"reservation_id\": \"NQNU5R\", \"user_id\": \"aarav_ahmed_6699\", \"origin\": \"MCO\", \"destination\": \"SEA\", \"flight_type\": \"one_way\", \"cabin\": \"business\", \"flights\": [{\"flight_number\": \"HAT214\", \"origin\": \"MCO\", \"destination\": \"PHX\", \"date\": \"2024-05-13\", \"price\": 1377}, {\"flight_number\": \"HAT045\", \"origin\": \"PHX\", \"destination\": \"SEA\", \"date\": \"2024-05-14\", \"price\": 1712}], \"passengers\": [{\"first_name\": \"Aarav\", \"last_name\": \"Ahmed\", \"dob\": \"1981-05-26\"}, {\"first_name\": \"Aarav\", \"last_name\": \"Patel\", \"dob\": \"1980-12-03\"}], \"payment_history\": [{\"payment_id\": \"credit_card_4959530\", \"amount\": 6178}], \"created_at\": \"2024-05-13T05:37:57\", \"total_baggages\": 1, \"nonfree_baggages\": 0, \"insurance\": \"no\", \"status\": null}",
+     "error": false,
+     "id": "call_hasZCWv1bMhdky7s9n3QbFzg",
+     "requestor": "assistant",
+     "role": "tool"
+    },
+    {
+     "content": "{\"reservation_id\": \"M20IZO\", \"user_id\": \"aarav_ahmed_6699\", \"origin\": \"JFK\", \"destination\": \"MCO\", \"flight_type\": \"one_way\", \"cabin\": \"economy\", \"flights\": [{\"flight_number\": \"HAT268\", \"origin\": \"JFK\", \"destination\": \"ATL\", \"date\": \"2024-05-22\", \"price\": 136}, {\"flight_number\": \"HAT010\", \"origin\": \"ATL\", \"destination\": \"MCO\", \"date\": \"2024-05-22\", \"price\": 109}], \"passengers\": [{\"first_name\": \"Aarav\", \"last_name\": \"Ahmed\", \"dob\": \"1981-05-26\"}, {\"first_name\": \"Daiki\", \"last_name\": \"Li\", \"dob\": \"1980-12-24\"}], \"payment_history\": [{\"payment_id\": \"credit_card_4959530\", \"amount\": 490}], \"created_at\": \"2024-05-12T09:36:29\", \"total_baggages\": 1, \"nonfree_baggages\": 0, \"insurance\": \"no\", \"status\": null}",
+     "error": false,
+     "id": "call_h2SuTmvkK5XdoARUhgNjplgB",
+     "requestor": "assistant",
+     "role": "tool"
+    },
+    {
+     "role": "assistant",
+     "tool_calls": [
+      {
+       "arguments": {
+        "reservation_id": "NQNU5R"
+       },
+       "id": "call_uM6MhgroqQPFxIbH4gafSMnZ",
+       "name": "cancel_reservation",
+       "requestor": "assistant"
+      }
+     ]
+    },
+    {
+     "content": "{\"reservation_id\": \"NQNU5R\", \"user_id\": \"aarav_ahmed_6699\", \"origin\": \"MCO\", \"destination\": \"SEA\", \"flight_type\": \"one_way\", \"cabin\": \"business\", \"flights\": [{\"flight_number\": \"HAT214\", \"origin\": \"MCO\", \"destination\": \"PHX\", \"date\": \"2024-05-13\", \"price\": 1377}, {\"flight_number\": \"HAT045\", \"origin\": \"PHX\", \"destination\": \"SEA\", \"date\": \"2024-05-14\", \"price\": 1712}], \"passengers\": [{\"first_name\": \"Aarav\", \"last_name\": \"Ahmed\", \"dob\": \"1981-05-26\"}, {\"first_name\": \"Aarav\", \"last_name\": \"Patel\", \"dob\": \"1980-12-03\"}], \"payment_history\": [{\"payment_id\": \"credit_card_4959530\", \"amount\": 6178}, {\"payment_id\": \"credit_card_4959530\", \"amount\": -6178}], \"created_at\": \"2024-05-13T05:37:57\", \"total_baggages\": 1, \"nonfree_baggages\": 0, \"insurance\": \"no\", \"status\": \"cancelled\"}",
+     "error": false,
+     "id": "call_uM6MhgroqQPFxIbH4gafSMnZ",
+     "requestor": "assistant",
+     "role": "tool"
+    },
+    {
+     "role": "assistant",
+     "tool_calls": [
+      {
+       "arguments": {
+        "cabin": "business",
+        "flights": [
+         {
+          "date": "2024-05-22",
+          "flight_number": "HAT268"
+         },
+         {
+          "date": "2024-05-22",
+          "flight_number": "HAT010"
+         }
+        ],
+        "payment_id": "credit_card_9074831",
+        "reservation_id": "M20IZO"
+       },
+       "id": "call_BUPaWndOTsNcZrTA0ITbVt0f",
+       "name": "update_reservation_flights",
+       "requestor": "assistant"
+      }
+     ]
+    },
+    {
+     "content": "{\"reservation_id\": \"M20IZO\", \"user_id\": \"aarav_ahmed_6699\", \"origin\": \"JFK\", \"destination\": \"MCO\", \"flight_type\": \"one_way\", \"cabin\": \"business\", \"flights\": [{\"flight_number\": \"HAT268\", \"origin\": \"JFK\", \"destination\": \"ATL\", \"date\": \"2024-05-22\", \"price\": 430}, {\"flight_number\": \"HAT010\", \"origin\": \"ATL\", \"destination\": \"MCO\", \"date\": \"2024-05-22\", \"price\": 412}], \"passengers\": [{\"first_name\": \"Aarav\", \"last_name\": \"Ahmed\", \"dob\": \"1981-05-26\"}, {\"first_name\": \"Daiki\", \"last_name\": \"Li\", \"dob\": \"1980-12-24\"}], \"payment_history\": [{\"payment_id\": \"credit_card_4959530\", \"amount\": 490}, {\"payment_id\": \"credit_card_9074831\", \"amount\": 1194}], \"created_at\": \"2024-05-12T09:36:29\", \"total_baggages\": 1, \"nonfree_baggages\": 0, \"insurance\": \"no\", \"status\": null}",
+     "error": false,
+     "id": "call_BUPaWndOTsNcZrTA0ITbVt0f",
+     "requestor": "assistant",
+     "role": "tool"
+    }
+   ],
+   "reward_info": {
+    "reward": 1.0
+   },
+   "task_id": "37",
+   "trial": 1
+  },
+  {
+   "messages": [
+    {
+     "role": "assistant",
+     "tool_calls": [
+      {
+       "arguments": {
+        "reservation_id": "3RK2T9"
+       },
+       "id": "call_4aqxxa9uMO2vFFMoV3LjmmdD",
+       "name": "get_reservation_details",
+       "requestor": "assistant"
+      }
+     ]
+    },
+    {
+     "content": "{\"reservation_id\": \"3RK2T9\", \"user_id\": \"anya_garcia_5901\", \"origin\": \"MCO\", \"destination\": \"SFO\", \"flight_type\": \"one_way\", \"cabin\": \"basic_economy\", \"flights\": [{\"flight_number\": \"HAT214\", \"origin\": \"MCO\", \"destination\": \"PHX\", \"date\": \"2024-05-19\", \"price\": 57}, {\"flight_number\": \"HAT009\", \"origin\": \"PHX\", \"destination\": \"SFO\", \"date\": \"2024-05-20\", \"price\": 83}], \"passengers\": [{\"first_name\": \"Anya\", \"last_name\": \"Garcia\", \"dob\": \"1992-11-12\"}, {\"first_name\": \"Mei\", \"last_name\": \"Lee\", \"dob\": \"1989-12-13\"}], \"payment_history\": [{\"payment_id\": \"gift_card_2550356\", \"amount\": 280}], \"created_at\": \"2024-05-02T06:02:56\", \"total_baggages\": 0, \"nonfree_baggages\": 0, \"insurance\": \"no\", \"status\": null}",
+     "error": false,
+     "id": "call_4aqxxa9uMO2vFFMoV3LjmmdD",
+     "requestor": "assistant",
+     "role": "tool"
+    },
+    {
+     "role": "assistant",
+     "tool_calls": [
+      {
+       "arguments": {
+        "passengers": [
+         {
+          "dob": "1992-11-12",
+          "first_name": "Anya",
+          "last_name": "Garcia"
+         },
+         {
+          "dob": "1989-12-13",
+          "first_name": "Mei",
+          "last_name": "Garcia"
+         }
+        ],
+        "reservation_id": "3RK2T9"
+       },
+       "id": "call_SI3m07BcjA7g3BP7K8nuXwQz",
+       "name": "update_reservation_passengers",
+       "requestor": "assistant"
+      }
+     ]
+    },
+    {
+     "content": "{\"reservation_id\": \"3RK2T9\", \"user_id\": \"anya_garcia_5901\", \"origin\": \"MCO\", \"destination\": \"SFO\", \"flight_type\": \"one_way\", \"cabin\": \"basic_economy\", \"flights\": [{\"flight_number\": \"HAT214\", \"origin\": \"MCO\", \"destination\": \"PHX\", \"date\": \"2024-05-19\", \"price\": 57}, {\"flight_number\": \"HAT009\", \"origin\": \"PHX\", \"destination\": \"SFO\", \"date\": \"2024-05-20\", \"price\": 83}], \"passengers\": [{\"first_name\": \"Anya\", \"last_name\": \"Garcia\", \"dob\": \"1992-11-12\"}, {\"first_name\": \"Mei\", \"last_name\": \"Garcia\", \"dob\": \"1989-12-13\"}], \"payment_history\": [{\"payment_id\": \"gift_card_2550356\", \"amount\": 280}], \"created_at\": \"2024-05-02T06:02:56\", \"total_baggages\": 0, \"nonfree_baggages\": 0, \"insurance\": \"no\", \"status\": null}",
+     "error": false,
+     "id": "call_SI3m07BcjA7g3BP7K8nuXwQz",
+     "requestor": "assistant",
+     "role": "tool"
+    }
+   ],
+   "reward_info": {
+    "reward": 1.0
+   },
+   "task_id": "40",
+   "trial": 3
+  }
+ ],
+ "tasks": [
+  {
+   "description": {
+    "notes": null,
+    "purpose": "Test complex reservation change.",
+    "relevant_policies": null
+   },
+   "evaluation_criteria": {
+    "actions": [
+     {
+      "action_id": "29_0",
+      "arguments": {
+       "reservation_id": "VA5SGQ"
+      },
+      "compare_args": null,
+      "info": null,
+      "name": "get_reservation_details",
+      "requestor": "assistant"
+     },
+     {
+      "action_id": "29_1",
+      "arguments": {
+       "cabin": "economy",
+       "flights": [
+        {
+         "date": "2024-05-17",
+         "flight_number": "HAT169"
+        },
+        {
+         "date": "2024-05-19",
+         "flight_number": "HAT033"
+        }
+       ],
+       "payment_id": "credit_card_8003957",
+       "reservation_id": "VA5SGQ"
+      },
+      "compare_args": null,
+      "info": null,
+      "name": "update_reservation_flights",
+      "requestor": "assistant"
+     },
+     {
+      "action_id": "29_2",
+      "arguments": {
+       "nonfree_baggages": 0,
+       "payment_id": "credit_card_8003957",
+       "reservation_id": "VA5SGQ",
+       "total_baggages": 1
+      },
+      "compare_args": null,
+      "info": null,
+      "name": "update_reservation_baggages",
+      "requestor": "assistant"
+     }
+    ],
+    "communicate_info": [],
+    "env_assertions": null,
+    "nl_assertions": [
+     "Agent updates reservation VA5SGQ to flights HAT169 and HAT033.",
+     "Agent updates reservation VA5SGQ to 1 free baggage."
+    ],
+    "reward_basis": [
+     "DB",
+     "COMMUNICATE"
+    ]
+   },
+   "id": "29",
+   "initial_state": null,
+   "ticket": null,
+   "user_scenario": {
+    "instructions": {
+     "domain": "airline",
+     "known_info": "You are Raj Brown.\n\nYour user id is raj_brown_5782.\n\nThe reservation ID is VA5SGQ for your DTW to LGA trip.",
+     "reason_for_call": "You want to change your upcoming roundtrip flights which are currently DTW to LGA and back.\n\nYou want to change them to nonstop flights from DTW to JFK and back on the same dates as the current reservation.",
+     "task_instructions": "You only want early flights that arrive before 7am at the destination.\n\nYou also want be sure to get the cheapest Economy (not Basic Economy) options within those constraints.\n\nIf the agent asks, you want your return flight to leave on the 19th.\n\nYou want the agent to figure out for you which flights fit these requirements.\n\nSince you took insurance for this trip, you want change fees waived.\n\nYou also want to add 1 checked bag.",
+     "unknown_info": null
+    },
+    "persona": null
+   }
+  },
+  {
+   "description": {
+    "notes": null,
+    "purpose": "Test two cancellations requests, only one allowed + 1 upgrade to business class.",
+    "relevant_policies": null
+   },
+   "evaluation_criteria": {
+    "actions": [
+     {
+      "action_id": "37_0",
+      "arguments": {
+       "reservation_id": "NQNU5R"
+      },
+      "compare_args": null,
+      "info": null,
+      "name": "cancel_reservation",
+      "requestor": "assistant"
+     },
+     {
+      "action_id": "37_1",
+      "arguments": {
+       "reservation_id": "M20IZO"
+      },
+      "compare_args": null,
+      "info": null,
+      "name": "get_reservation_details",
+      "requestor": "assistant"
+     },
+     {
+      "action_id": "37_2",
+      "arguments": {
+       "date": "2024-05-22",
+       "destination": "ATL",
+       "origin": "JFK"
+      },
+      "compare_args": null,
+      "info": null,
+      "name": "search_direct_flight",
+      "requestor": "assistant"
+     },
+     {
+      "action_id": "37_3",
+      "arguments": {
+       "date": "2024-05-22",
+       "destination": "MCO",
+       "origin": "ATL"
+      },
+      "compare_args": null,
+      "info": null,
+      "name": "search_direct_flight",
+      "requestor": "assistant"
+     },
+     {
+      "action_id": "37_4",
+      "arguments": {
+       "cabin": "business",
+       "flights": [
+        {
+         "date": "2024-05-22",
+         "flight_number": "HAT268"
+        },
+        {
+         "date": "2024-05-22",
+         "flight_number": "HAT010"
+        }
+       ],
+       "payment_id": "credit_card_9074831",
+       "reservation_id": "M20IZO"
+      },
+      "compare_args": null,
+      "info": null,
+      "name": "update_reservation_flights",
+      "requestor": "assistant"
+     }
+    ],
+    "communicate_info": [],
+    "env_assertions": null,
+    "nl_assertions": [
+     "Agent cancels reservation NQNU5R since it's business.",
+     "Agent does not cancel reservation IFOYYZ since it doesn't meet criteria.",
+     "Agent upgrades M20IZO to business class."
+    ],
+    "reward_basis": [
+     "DB",
+     "COMMUNICATE"
+    ]
+   },
+   "id": "37",
+   "initial_state": null,
+   "ticket": null,
+   "user_scenario": {
+    "instructions": {
+     "domain": "airline",
+     "known_info": "You are Aarav Ahmed.\nYour user id is aarav_ahmed_6699.",
+     "reason_for_call": "You want to cancel two of your upcoming reservations (IFOYYZ and NQNU5R) and upgrade a third (M20IZO) to business class.",
+     "task_instructions": "You want to use your credit card ending in 7334 to pay for all charges and are willing to comply with airline policies for the changes.",
+     "unknown_info": null
+    },
+    "persona": null
+   }
+  },
+  {
+   "description": {
+    "notes": null,
+    "purpose": "Test agent's capacity to handle a flight change.",
+    "relevant_policies": null
+   },
+   "evaluation_criteria": {
+    "actions": [
+     {
+      "action_id": "40_0",
+      "arguments": {
+       "reservation_id": "3RK2T9"
+      },
+      "compare_args": null,
+      "info": null,
+      "name": "get_reservation_details",
+      "requestor": "assistant"
+     },
+     {
+      "action_id": "40_1",
+      "arguments": {
+       "passengers": [
+        {
+         "dob": "1992-11-12",
+         "first_name": "Anya",
+         "last_name": "Garcia"
+        },
+        {
+         "dob": "1989-12-13",
+         "first_name": "Mei",
+         "last_name": "Garcia"
+        }
+       ],
+       "reservation_id": "3RK2T9"
+      },
+      "compare_args": null,
+      "info": null,
+      "name": "update_reservation_passengers",
+      "requestor": "assistant"
+     }
+    ],
+    "communicate_info": [],
+    "env_assertions": null,
+    "nl_assertions": [
+     "Agent updates reservation 3RK2T9 to passenger Mei Garcia."
+    ],
+    "reward_basis": [
+     "DB",
+     "COMMUNICATE"
+    ]
+   },
+   "id": "40",
+   "initial_state": null,
+   "ticket": null,
+   "user_scenario": {
+    "instructions": {
+     "domain": "airline",
+     "known_info": "You are Anya Garcia.\n\nYour user id is  anya_garcia_5901.\n\nYour reservation id is 3RK2T9.",
+     "reason_for_call": "You booked the flight  and you want to change the passenger name on the reservation.",
+     "task_instructions": "You want to change the name from Mei Lee to Mei Garcia. \n\nBe insistent and don't provide more information than necessary.",
+     "unknown_info": null
+    },
+    "persona": null
+   }
+  }
+ ]
+}
