@@ -1,5 +1,5 @@
 import pytest
-from builders import flight, read_reservation, read_user, search_direct
+from builders import flight, read_reservation, read_status, read_user, search_direct
 
 from airline_write_gate.gate import Gate, load_policy
 
@@ -131,9 +131,19 @@ FLOWN = [{"flight_number": "HAT1", "origin": "JFK", "destination": "ATL", "date"
 def test_a_cabin_change_after_a_flown_segment_is_blocked():
     gate = Gate()
     read_reservation(gate, flights=FLOWN)
+    read_status(gate, "HAT1", "2024-05-10", "landed")
     decision = change_flights(gate, [{"flight_number": "HAT1", "date": "2024-05-10"}], cabin="business")
     assert decision.verdict == "block"
     assert "cabin-change-after-flown" in rules_of(decision)
+
+
+def test_a_cabin_change_after_a_past_flight_with_no_status_read_is_held_not_blocked():
+    gate = Gate()
+    read_reservation(gate, flights=FLOWN)
+    decision = change_flights(gate, [{"flight_number": "HAT1", "date": "2024-05-10"}], cabin="business")
+    assert decision.verdict == "hold"
+    cabin_findings = [f for f in decision.findings if f.rule == "cabin-change-after-flown"]
+    assert "HAT1 on 2024-05-10 has not been read" in cabin_findings[0].reason
 
 
 def test_a_flown_segment_does_not_matter_when_the_cabin_stays_the_same():
@@ -235,6 +245,14 @@ def test_lowering_the_checked_bags_is_blocked():
     assert rules_of(decision) == ["baggage-no-removal"]
 
 
+def test_the_same_number_of_bags_is_not_a_removal():
+    gate = Gate()
+    read_reservation(gate, total_baggages=3, nonfree_baggages=2)
+    read_user(gate)
+    assert change_bags(gate, 3, 2).verdict == "allow"
+    assert change_bags(gate, 2, 1).verdict == "block"
+
+
 def test_adding_bags_with_the_right_non_free_count_passes():
     gate = Gate()
     read_reservation(gate, total_baggages=1, nonfree_baggages=0)
@@ -260,6 +278,8 @@ def test_a_wrong_non_free_count_is_blocked_with_the_right_one_in_the_repair():
         ("regular", "business", 1, 2, 0),
         ("silver", "basic_economy", 1, 2, 1),
         ("silver", "economy", 2, 5, 1),
+        ("silver", "business", 1, 4, 1),
+        ("gold", "basic_economy", 1, 3, 1),
         ("gold", "economy", 1, 3, 0),
         ("gold", "business", 2, 8, 0),
         ("gold", "business", 2, 9, 1),

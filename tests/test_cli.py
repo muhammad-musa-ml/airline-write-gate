@@ -70,12 +70,19 @@ def test_an_empty_data_folder_says_to_fetch(tmp_path):
     assert "fetch_data.py" in str(stopped.value)
 
 
-def test_replay_prints_each_write_with_its_rule_and_repair(capsys):
-    code = main(["replay", str(FIXTURES / "runs.json"), "--task", "37", "--trial", "1"])
+@pytest.mark.parametrize(
+    "task,trial,line,finding",
+    [
+        ("29", 0, "BLOCK update_reservation_flights (ran)", "trip-endpoints [block]"),
+        ("37", 1, "HOLD  cancel_reservation (ran)", "cancel-eligibility [hold]"),
+    ],
+)
+def test_replay_prints_each_write_with_its_rule_and_repair(capsys, task, trial, line, finding):
+    code = main(["replay", str(FIXTURES / "runs.json"), "--task", task, "--trial", str(trial)])
     out = capsys.readouterr().out
     assert code == 0
-    assert "BLOCK cancel_reservation (ran)" in out
-    assert "cancel-eligibility [block]" in out
+    assert line in out
+    assert finding in out
     assert "repair:" in out
 
 

@@ -72,6 +72,15 @@ def change_reservation(gate, rid="R1", tool="update_reservation_flights", error=
     gate.observe(tool, {"reservation_id": rid}, json.dumps(reservation(rid, **overrides)), error)
 
 
+def call(cid, name, arguments, requestor="assistant"):
+    """One assistant message with a single tool call, in the shape of a tau2-bench trajectory."""
+    return {"role": "assistant", "tool_calls": [{"id": cid, "name": name, "arguments": arguments, "requestor": requestor}]}
+
+
+def result(cid, content, error=False):
+    return {"role": "tool", "id": cid, "content": content, "error": error, "requestor": "assistant"}
+
+
 def read_status(gate, number, date, status):
     gate.observe("get_flight_status", {"flight_number": number, "date": date}, status)
 

@@ -2,7 +2,8 @@
 
     python scripts/count_writes.py [DATA_DIR]
 
-It does not import the gate, so a bug in replay or the evaluation cannot hide in both. Exit 1 on a mismatch.
+It does not import the gate, so a bug in replay or the evaluation does not change these four counts
+(writes that ran, writes that raised, runs passed, runs failed). Exit 1 on a mismatch.
 """
 
 import json

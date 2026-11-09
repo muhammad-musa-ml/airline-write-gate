@@ -85,6 +85,30 @@ def test_a_delayed_flight_is_compensated_only_after_the_reservation_is_changed()
     assert send(gate, 50).verdict == "allow"
 
 
+NEW_FLIGHTS = [{"flight_number": "HAT2", "origin": "JFK", "destination": "ATL", "date": "2024-05-21", "price": 100}]
+
+
+def test_a_delayed_flight_is_still_compensated_after_a_change_that_replaces_the_flight():
+    # the result of a real flights change holds the new flight, so the delayed one is no longer on the record
+    gate = Gate()
+    read_user(gate, membership="gold")
+    read_reservation(gate)
+    read_status(gate, "HAT1", "2024-05-20", "delayed")
+    change_reservation(gate, flights=NEW_FLIGHTS)
+    assert gate.session.reservations["R1"]["flights"][0]["flight_number"] == "HAT2"
+    assert send(gate, 50).verdict == "allow"
+
+
+def test_a_replaced_flight_that_was_on_time_does_not_back_a_delayed_amount():
+    gate = Gate()
+    read_user(gate, membership="gold")
+    read_reservation(gate)
+    read_status(gate, "HAT1", "2024-05-20", "on time")
+    change_reservation(gate, flights=NEW_FLIGHTS)
+    read_status(gate, "HAT2", "2024-05-21", "available")
+    assert send(gate, 50).verdict == "block"
+
+
 def test_a_cancellation_by_the_agent_also_counts_as_the_change():
     gate = Gate()
     read_user(gate, membership="gold")

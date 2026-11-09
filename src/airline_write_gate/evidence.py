@@ -47,6 +47,22 @@ class Session:
     statuses: dict = field(default_factory=dict)
     # reservation ids the agent has changed or cancelled in this session
     changed: set = field(default_factory=set)
+    # reservation id -> (flight_number, date) -> every flight the session has seen on it,
+    # including flights a later change took off the reservation
+    flights_seen_on: dict = field(default_factory=dict)
+
+    def flights_ever_on(self, reservation_id):
+        """Every flight the session has seen on a reservation, in the order it first saw them."""
+        return list(self.flights_seen_on.get(reservation_id, {}).values())
+
+    def _store_reservation(self, reservation):
+        rid = reservation["reservation_id"]
+        seen = self.flights_seen_on.setdefault(rid, {})
+        for flight in (self.reservations.get(rid) or {}).get("flights") or []:
+            seen[(flight["flight_number"], flight["date"])] = flight
+        for flight in reservation.get("flights") or []:
+            seen[(flight["flight_number"], flight["date"])] = flight
+        self.reservations[rid] = reservation
 
     def observe(self, name, arguments, content, error=False):
         """Record one tool result. Results of failed calls are ignored."""
@@ -63,7 +79,7 @@ class Session:
         elif name == "get_reservation_details" or name in RESERVATION_RESULT_TOOLS:
             reservation = _parse_json(content)
             if isinstance(reservation, dict) and "reservation_id" in reservation:
-                self.reservations[reservation["reservation_id"]] = reservation
+                self._store_reservation(reservation)
         elif name == "search_direct_flight":
             result = _parse_json(content)
             if isinstance(result, list):

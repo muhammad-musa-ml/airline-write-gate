@@ -8,11 +8,11 @@
           "passed": 0
         },
         "cancel-eligibility": {
-          "failed": 11,
+          "failed": 4,
           "passed": 0
         },
         "certificate-eligibility": {
-          "failed": 9,
+          "failed": 8,
           "passed": 7
         },
         "flight-change-basic-economy": {
@@ -119,11 +119,11 @@
       "failed": 100,
       "holds_by_rule": {
         "cancel-eligibility": {
-          "failed": 48,
+          "failed": 55,
           "passed": 0
         },
         "certificate-eligibility": {
-          "failed": 4,
+          "failed": 5,
           "passed": 0
         },
         "flights-seen-available": {
@@ -159,8 +159,8 @@
           "tool": "cancel_reservation",
           "verdicts": {
             "allow": 0,
-            "block": 2,
-            "hold": 0
+            "block": 0,
+            "hold": 2
           }
         },
         {
@@ -266,22 +266,22 @@
       ],
       "trajectories": 200,
       "trajectories_with_block": {
-        "failed": 28,
+        "failed": 22,
         "passed": 9
       },
       "trajectories_with_hold": {
-        "failed": 48,
+        "failed": 49,
         "passed": 5
       },
       "verdicts_errored": {
         "allow": 15,
-        "block": 10,
-        "hold": 2
+        "block": 9,
+        "hold": 3
       },
       "verdicts_ran": {
         "allow": 159,
-        "block": 44,
-        "hold": 62
+        "block": 36,
+        "hold": 70
       },
       "writes_errored": 27,
       "writes_ran": 265
@@ -298,8 +298,8 @@
           "passed": 0
         },
         "cancel-eligibility": {
-          "failed": 10,
-          "passed": 2
+          "failed": 3,
+          "passed": 0
         },
         "certificate-eligibility": {
           "failed": 4,
@@ -369,26 +369,6 @@
           "in_later_gold": false,
           "in_run_gold": true,
           "rules": [
-            "cancel-eligibility"
-          ],
-          "task": "37",
-          "tool": "cancel_reservation",
-          "trial": 1
-        },
-        {
-          "in_later_gold": false,
-          "in_run_gold": true,
-          "rules": [
-            "cancel-eligibility"
-          ],
-          "task": "37",
-          "tool": "cancel_reservation",
-          "trial": 2
-        },
-        {
-          "in_later_gold": false,
-          "in_run_gold": true,
-          "rules": [
             "certificate-eligibility"
           ],
           "task": "38",
@@ -403,8 +383,8 @@
           "passed": 3
         },
         "cancel-eligibility": {
-          "failed": 18,
-          "passed": 0
+          "failed": 25,
+          "passed": 2
         },
         "certificate-eligibility": {
           "failed": 3,
@@ -447,8 +427,8 @@
           "tool": "cancel_reservation",
           "verdicts": {
             "allow": 0,
-            "block": 2,
-            "hold": 0
+            "block": 0,
+            "hold": 2
           }
         },
         {
@@ -527,8 +507,8 @@
           "tool": "cancel_reservation",
           "verdicts": {
             "allow": 0,
-            "block": 2,
-            "hold": 0
+            "block": 0,
+            "hold": 2
           }
         },
         {
@@ -554,22 +534,22 @@
       ],
       "trajectories": 200,
       "trajectories_with_block": {
-        "failed": 24,
-        "passed": 8
+        "failed": 17,
+        "passed": 6
       },
       "trajectories_with_hold": {
-        "failed": 32,
+        "failed": 37,
         "passed": 8
       },
       "verdicts_errored": {
         "allow": 2,
-        "block": 11,
-        "hold": 4
+        "block": 10,
+        "hold": 5
       },
       "verdicts_ran": {
         "allow": 125,
-        "block": 32,
-        "hold": 48
+        "block": 23,
+        "hold": 57
       },
       "writes_errored": 17,
       "writes_ran": 205
@@ -586,8 +566,8 @@
           "passed": 0
         },
         "cancel-eligibility": {
-          "failed": 17,
-          "passed": 2
+          "failed": 4,
+          "passed": 0
         },
         "certificate-eligibility": {
           "failed": 1,
@@ -612,26 +592,6 @@
           "task": "2",
           "tool": "send_certificate",
           "trial": 0
-        },
-        {
-          "in_later_gold": false,
-          "in_run_gold": true,
-          "rules": [
-            "cancel-eligibility"
-          ],
-          "task": "9",
-          "tool": "cancel_reservation",
-          "trial": 1
-        },
-        {
-          "in_later_gold": false,
-          "in_run_gold": true,
-          "rules": [
-            "cancel-eligibility"
-          ],
-          "task": "9",
-          "tool": "cancel_reservation",
-          "trial": 2
         },
         {
           "in_later_gold": false,
@@ -691,8 +651,8 @@
           "passed": 6
         },
         "cancel-eligibility": {
-          "failed": 33,
-          "passed": 0
+          "failed": 46,
+          "passed": 2
         },
         "certificate-eligibility": {
           "failed": 0,
@@ -735,8 +695,8 @@
           "tool": "cancel_reservation",
           "verdicts": {
             "allow": 0,
-            "block": 3,
-            "hold": 0
+            "block": 0,
+            "hold": 3
           }
         },
         {
@@ -815,8 +775,8 @@
           "tool": "cancel_reservation",
           "verdicts": {
             "allow": 0,
-            "block": 3,
-            "hold": 0
+            "block": 0,
+            "hold": 3
           }
         },
         {
@@ -842,12 +802,12 @@
       ],
       "trajectories": 200,
       "trajectories_with_block": {
-        "failed": 36,
-        "passed": 8
+        "failed": 26,
+        "passed": 6
       },
       "trajectories_with_hold": {
         "failed": 46,
-        "passed": 12
+        "passed": 14
       },
       "verdicts_errored": {
         "allow": 20,
@@ -856,8 +816,8 @@
       },
       "verdicts_ran": {
         "allow": 136,
-        "block": 48,
-        "hold": 75
+        "block": 33,
+        "hold": 90
       },
       "writes_errored": 61,
       "writes_ran": 259
@@ -868,10 +828,6 @@
         "baggage-allowance": {
           "failed": 1,
           "passed": 0
-        },
-        "cancel-eligibility": {
-          "failed": 1,
-          "passed": 1
         },
         "certificate-eligibility": {
           "failed": 2,
@@ -901,16 +857,6 @@
           "in_later_gold": false,
           "in_run_gold": true,
           "rules": [
-            "cancel-eligibility"
-          ],
-          "task": "9",
-          "tool": "cancel_reservation",
-          "trial": 2
-        },
-        {
-          "in_later_gold": false,
-          "in_run_gold": true,
-          "rules": [
             "trip-endpoints"
           ],
           "task": "29",
@@ -925,8 +871,8 @@
           "passed": 1
         },
         "cancel-eligibility": {
-          "failed": 6,
-          "passed": 0
+          "failed": 7,
+          "passed": 1
         },
         "certificate-eligibility": {
           "failed": 2,
@@ -969,8 +915,8 @@
           "tool": "cancel_reservation",
           "verdicts": {
             "allow": 0,
-            "block": 1,
-            "hold": 0
+            "block": 0,
+            "hold": 1
           }
         },
         {
@@ -1049,8 +995,8 @@
           "tool": "cancel_reservation",
           "verdicts": {
             "allow": 0,
-            "block": 1,
-            "hold": 0
+            "block": 0,
+            "hold": 1
           }
         },
         {
@@ -1076,22 +1022,22 @@
       ],
       "trajectories": 200,
       "trajectories_with_block": {
-        "failed": 7,
-        "passed": 3
+        "failed": 6,
+        "passed": 2
       },
       "trajectories_with_hold": {
-        "failed": 19,
-        "passed": 7
+        "failed": 20,
+        "passed": 8
       },
       "verdicts_errored": {
         "allow": 2,
-        "block": 3,
-        "hold": 4
+        "block": 1,
+        "hold": 6
       },
       "verdicts_ran": {
         "allow": 125,
-        "block": 10,
-        "hold": 30
+        "block": 8,
+        "hold": 32
       },
       "writes_errored": 9,
       "writes_ran": 165

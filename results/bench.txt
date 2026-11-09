@@ -2,8 +2,8 @@ Output of: airline-write-gate bench --data data --runs 5
 Machine-specific (Python 3.13.5, Windows 11); not checked by eval --check.
 
 800 runs, 5 passes; microseconds per Gate.evaluate call on a write
-pass 1: calls 1008  p50 31.0  p99 104.3  max 190.5
-pass 2: calls 1008  p50 28.4  p99 127.4  max 233.2
-pass 3: calls 1008  p50 29.4  p99 129.3  max 318.3
-pass 4: calls 1008  p50 28.1  p99 118.0  max 306.3
-pass 5: calls 1008  p50 22.9  p99 73.9  max 137.1
+pass 1: calls 1008  p50 11.9  p99 41.6  max 95.9
+pass 2: calls 1008  p50 11.5  p99 38.3  max 82.1
+pass 3: calls 1008  p50 13.0  p99 44.5  max 194.1
+pass 4: calls 1008  p50 13.3  p99 40.2  max 107.2
+pass 5: calls 1008  p50 14.8  p99 50.1  max 141.8

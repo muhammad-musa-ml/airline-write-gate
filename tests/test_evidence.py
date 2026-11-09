@@ -58,10 +58,21 @@ def test_direct_search_takes_the_date_from_the_search_arguments():
 def test_onestop_search_keeps_every_leg_with_its_own_date():
     session = Session()
     leg_one = flight("HAT3", "2024-05-24")
-    leg_two = flight("HAT4", "2024-05-24", origin="ATL", destination="PHL")
+    leg_two = flight("HAT4", "2024-05-25", origin="ATL", destination="PHL")
     session.observe("search_onestop_flight", {"origin": "JFK", "destination": "PHL", "date": "2024-05-24"}, json.dumps([[leg_one, leg_two]]))
     assert session.flights[("HAT3", "2024-05-24")]["destination"] == "ATL"
-    assert session.flights[("HAT4", "2024-05-24")]["destination"] == "PHL"
+    assert session.flights[("HAT4", "2024-05-25")]["destination"] == "PHL"
+    assert ("HAT4", "2024-05-24") not in session.flights
+
+
+def test_the_flights_a_change_took_off_a_reservation_are_still_remembered():
+    session = Session()
+    session.observe("get_reservation_details", {"reservation_id": "R1"}, json.dumps(reservation("R1")))
+    new = [{"flight_number": "HAT2", "origin": "JFK", "destination": "ATL", "date": "2024-05-21", "price": 100}]
+    session.observe("update_reservation_flights", {"reservation_id": "R1"}, json.dumps(reservation("R1", flights=new)))
+    assert [f["flight_number"] for f in session.reservations["R1"]["flights"]] == ["HAT2"]
+    assert sorted(f["flight_number"] for f in session.flights_ever_on("R1")) == ["HAT1", "HAT2"]
+    assert session.flights_ever_on("R9") == []
 
 
 def test_a_later_search_replaces_the_earlier_record_of_the_same_flight():

@@ -98,9 +98,44 @@ def test_a_flown_segment_blocks_even_a_business_reservation():
         cabin="business",
         flights=[{"flight_number": "HAT1", "origin": "JFK", "destination": "ATL", "date": "2024-05-10", "price": 300}],
     )
+    read_status(gate, "HAT1", "2024-05-10", "landed")
     decision = verdict(gate, "cancel_reservation", reservation_id="R1")
     assert decision.verdict == "block"
     assert "already been flown" in decision.findings[0].reason
+
+
+def test_a_past_flight_whose_status_was_not_read_is_held_even_on_a_business_reservation():
+    # the airline cancels flights on past dates too, and a cancelled flight was not flown
+    gate = Gate()
+    read_reservation(
+        gate,
+        cabin="business",
+        flights=[{"flight_number": "HAT1", "origin": "JFK", "destination": "ATL", "date": "2024-05-10", "price": 300}],
+    )
+    decision = verdict(gate, "cancel_reservation", reservation_id="R1")
+    assert decision.verdict == "hold"
+    assert decision.findings[0].rule == "cancel-eligibility"
+    assert "HAT1 on 2024-05-10 has not been read" in decision.findings[0].reason
+    assert "get_flight_status" in decision.findings[0].repair
+    read_status(gate, "HAT1", "2024-05-10", "landed")
+    assert verdict(gate, "cancel_reservation", reservation_id="R1").verdict == "block"
+
+
+@pytest.mark.parametrize("date,expected", [("2024-05-14", "hold"), ("2024-05-15", "hold"), ("2024-05-16", "allow")])
+def test_an_unread_flight_is_held_up_to_today_and_cannot_have_been_flown_after_it(date, expected):
+    gate = Gate()
+    read_reservation(
+        gate,
+        cabin="business",
+        flights=[{"flight_number": "HAT1", "origin": "JFK", "destination": "ATL", "date": date, "price": 300}],
+    )
+    assert verdict(gate, "cancel_reservation", reservation_id="R1").verdict == expected
+
+
+def test_a_booking_exactly_24_hours_old_is_still_inside_the_window():
+    gate = Gate()
+    read_reservation(gate, created_at="2024-05-14T15:00:00")
+    assert verdict(gate, "cancel_reservation", reservation_id="R1").verdict == "allow"
 
 
 def test_a_past_flight_the_airline_cancelled_was_not_flown():
@@ -122,7 +157,7 @@ def test_a_flight_today_with_no_status_read_is_held():
     )
     decision = verdict(gate, "cancel_reservation", reservation_id="R1")
     assert decision.verdict == "hold"
-    assert "departs today" in decision.findings[0].reason
+    assert "HAT1 on 2024-05-15 has not been read" in decision.findings[0].reason
 
 
 @pytest.mark.parametrize("status,expected", [("landed", "block"), ("flying", "block"), ("delayed", "allow"), ("on time", "allow")])

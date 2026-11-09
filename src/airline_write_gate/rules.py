@@ -75,16 +75,23 @@ def flight_status(session: Session, number, date):
 
 
 def flown(flight, session: Session, now):
-    """True, False, or None when the session cannot tell (a flight dated today with no status read)."""
+    """True or False when a status the session read says so, or the flight is dated after today.
+
+    None when the session cannot tell: a flight dated today or earlier whose status was not read.
+    A date is not enough: the airline cancels flights on past dates too, and a cancelled flight was not flown.
+    """
     status = flight_status(session, flight["flight_number"], flight["date"])
     if status is not None:
         return status in FLOWN_STATUSES
     day = datetime.fromisoformat(flight["date"]).date()
-    if day < now.date():
-        return True
-    if day == now.date():
+    if day <= now.date():
         return None
     return False
+
+
+def _unread_flown_reason(flights, now):
+    names = ", ".join(f"{f['flight_number']} on {f['date']}" for f in flights)
+    return f"the status of {names} has not been read, and a flight dated {now.date().isoformat()} or earlier may already have been flown"
 
 
 def cancel_eligibility(name, arguments, session: Session, params, now, rule_id):
@@ -93,7 +100,7 @@ def cancel_eligibility(name, arguments, session: Session, params, now, rule_id):
         return []  # read_before_write holds this call
     rid = res["reservation_id"]
     findings = []
-    unknown_today = []
+    unread_flights = []
     for flight in res["flights"]:
         state = flown(flight, session, now)
         if state is True:
@@ -106,17 +113,16 @@ def cancel_eligibility(name, arguments, session: Session, params, now, rule_id):
                 )
             )
         elif state is None:
-            unknown_today.append(flight)
+            unread_flights.append(flight)
     if findings:
         return findings
-    if unknown_today:
-        names = ", ".join(f"{f['flight_number']} on {f['date']}" for f in unknown_today)
+    if unread_flights:
         return [
             _finding(
                 rule_id,
                 "hold",
-                f"{names} departs today and its status has not been read",
-                "call get_flight_status for each of these flights to learn whether it has been flown",
+                _unread_flown_reason(unread_flights, now),
+                "call get_flight_status for each of these flights: a flown segment blocks the cancellation and a flight the airline cancelled allows it",
             )
         ]
 
@@ -203,7 +209,7 @@ def cabin_change_after_flown(name, arguments, session: Session, params, now, rul
                 _finding(
                     rule_id,
                     "hold",
-                    f"{_label((flight['flight_number'], flight['date']))} departs today and its status has not been read",
+                    _unread_flown_reason([flight], now),
                     "call get_flight_status for it to learn whether it has been flown",
                 )
             )
@@ -421,7 +427,9 @@ def certificate_eligibility(name, arguments, session: Session, params, now, rule
     unchanged = []
     for res in eligible:
         passengers = len(res["passengers"])
-        statuses = [flight_status(session, f["flight_number"], f["date"]) for f in res["flights"]]
+        # the flights a change took off the reservation still count: the delay is why the user wrote in
+        flights = session.flights_ever_on(res["reservation_id"]) or res["flights"]
+        statuses = [flight_status(session, f["flight_number"], f["date"]) for f in flights]
         unread = unread or any(s is None for s in statuses)
         if amount == params["cancelled_per_passenger"] * passengers and "cancelled" in statuses:
             return []
